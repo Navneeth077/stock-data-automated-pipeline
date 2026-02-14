@@ -27,6 +27,6 @@ jobs:
           pip install -r requirements.txt
 
       - name: Run pipeline
-        run: Big Tech Stocks (1).py
+        run: Python "Big Tech Stocks (1).py"
 
 
