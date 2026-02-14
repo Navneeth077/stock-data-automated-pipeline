@@ -1,20 +1,50 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
+"""
+Automated Financial Data Pipeline
+Extracts stock data and stores it in Neon PostgreSQL.
+"""
+
+import yfinance as yf
+import pandas as pd
+from sqlalchemy import create_engine
+import os
 
 
-'''Project 1: Automated Financial Data Pipeline
-Objective: This notebook automates the extraction of stock market data and stores it in a Neon PostgreSQL database for daily tracking.'''
+def main():
+    db_url = os.environ.get("DATABASE_URL")
+
+    if not db_url:
+        raise ValueError("DATABASE_URL environment variable not set.")
+
+    engine = create_engine(db_url)
+    print("✅ Connected to database.")
+
+    tickers = ["AAPL", "MSFT", "GOOGL", "NVDA"]
+
+    print("📥 Downloading stock data...")
+    raw_data = yf.download(tickers, period="1mo", interval="1d")
+
+    df = raw_data["Close"].stack().reset_index()
+    df.columns = ["date", "ticker", "price_usd"]
+    df = df.dropna()
+
+    print("📊 Preview:")
+    print(df.tail())
+
+    df.to_sql(
+        "stock_prices_daily",
+        engine,
+        if_exists="replace",
+        index=False
+    )
+
+    print("🚀 Data successfully uploaded!")
 
 
-# In[2]:
-
-
-pip install notebook pandas yfinance sqlalchemy psycopg2-binary
-
-
-# In[4]:
+if __name__ == "__main__":
+    main()
 
 
 import yfinance as yf
