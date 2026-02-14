@@ -1,0 +1,3 @@
+cron: '0 9 * * *'
+ubuntu-latest
+env: DATABASE_URL
