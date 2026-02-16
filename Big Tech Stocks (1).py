@@ -35,7 +35,7 @@ def main():
     df.columns = ["date", "ticker", "close"]
 
     df = df.sort_values(["ticker", "date"])
-
+    df['Volume'] = df['Volume'].fillna(0).astype(int)
     # 📈 Calculate indicators per ticker
     df["daily_return"] = df.groupby("ticker")["close"].pct_change()
     df["sma_20"] = df.groupby("ticker")["close"].transform(
