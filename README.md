@@ -28,5 +28,3 @@ Idempotent Design: Prevents data duplication through SQL constraints and Python 
 
 Auto-Refreshing Dashboard: Connected to Power BI for real-time visualization of stock trends.
 
-📊 SQL Sample
-To verify the data in the Neon SQL editor, run: SELECT * FROM stock_prices_daily;
